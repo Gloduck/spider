@@ -1,0 +1,15 @@
+{
+    "ua": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.90 Safari/537.36",
+    "cookie": "your cookie(necessary)",
+    "overlayExists": false,
+    "coreThreadCount": 4,
+    "maxThreadCount": 8,
+    "timeoutMilliseconds": 3000,
+    "downloadBufferSize": 5242880,
+    "baseDownloadPath": ".",
+    "proxyHostAndPort": "",
+    "type":"",
+    "targetLists": [
+      ""
+    ]
+  }
