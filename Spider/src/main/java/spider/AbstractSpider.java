@@ -40,6 +40,7 @@ public abstract class AbstractSpider {
 
     /**
      * 获取下载信息
+     *
      * @param url 下载url
      * @return 下载信息
      * @throws Exception 出现的异常
@@ -48,6 +49,7 @@ public abstract class AbstractSpider {
 
     /**
      * 通过列表解析出需要下载页面的链接
+     *
      * @param singleList 列表url
      * @return 解析后的url
      * @throws Exception 出现的异常
@@ -68,7 +70,7 @@ public abstract class AbstractSpider {
         List<String> urls;
         for (String current : list) {
             try {
-                if(noticeHook != null){
+                if (noticeHook != null) {
                     noticeHook.parseListing(config, current);
                 }
                 urls = parsePageList(current);
@@ -87,6 +89,7 @@ public abstract class AbstractSpider {
 
     /**
      * 通过URL建立一个URL请求
+     *
      * @param url 请求URL
      * @return 请求
      */
@@ -109,37 +112,42 @@ public abstract class AbstractSpider {
     /**
      * 开始文件
      */
-    public final void startDownload() {
+    public final void startDownload() throws InterruptedException {
         BlockingQueue<Runnable> queue = new LinkedBlockingDeque<>();
         ThreadPoolExecutor executor = new ThreadPoolExecutor(config.getCoreThreadCount(), config.getMaxThreadCount(), 0L, TimeUnit.MILLISECONDS, queue, Executors.defaultThreadFactory(), new ThreadPoolExecutor.AbortPolicy());
         allTargetUrls = doParsePageList(config.getTargetLists());
         for (String downloadUrl : allTargetUrls) {
             executor.submit(new DownloadTask(downloadUrl));
         }
-        if(noticeHook != null){
+
+        executor.shutdown();
+        executor.awaitTermination(Integer.MAX_VALUE, TimeUnit.MINUTES);
+        if (noticeHook != null) {
             noticeHook.allTaskDone(config, failedSet, allTargetUrls);
         }
-        executor.shutdown();
     }
 
     /**
      * 获取失败列表
+     *
      * @return 失败的列表
      */
-    public final Set<String> getFailedSet(){
+    public final Set<String> getFailedSet() {
         return this.failedSet;
     }
 
     /**
      * 返回所有的目标链接
+     *
      * @return
      */
-    public final List<String> getAllTargetUrls(){
+    public final List<String> getAllTargetUrls() {
         return this.allTargetUrls;
     }
 
     /**
      * 调整文件名
+     *
      * @param name 原文件名
      * @return 替换后的文件名
      */
@@ -149,6 +157,7 @@ public abstract class AbstractSpider {
 
     /**
      * 使用NIO下载
+     *
      * @param info 下载信息
      * @return 是否下载成功
      */
@@ -162,7 +171,7 @@ public abstract class AbstractSpider {
             Files.copy(ins, target, StandardCopyOption.REPLACE_EXISTING);
             success = true;
         } catch (IOException e) {
-            if(noticeHook != null){
+            if (noticeHook != null) {
                 noticeHook.downloadFailed(config, failedSet, info, e);
             }
         }
@@ -172,6 +181,7 @@ public abstract class AbstractSpider {
 
     /**
      * 下载文件，并且记录进度
+     *
      * @param info 文件信息
      * @return 是否下载成功
      */
@@ -208,7 +218,7 @@ public abstract class AbstractSpider {
                     inputStream.close();
                 }
             } catch (IOException e) {
-                if(noticeHook != null){
+                if (noticeHook != null) {
                     noticeHook.downloadFailed(config, failedSet, info, e);
                 }
             }

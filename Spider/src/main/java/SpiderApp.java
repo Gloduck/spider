@@ -12,6 +12,9 @@ import spider.impl.PornHubSpider;
 import java.io.*;
 
 
+/**
+ * @author Gloduck
+ */
 public class SpiderApp {
 
     public static void main(String[] args) {
@@ -33,11 +36,13 @@ public class SpiderApp {
                     throw new IllegalArgumentException();
             }
             abstractSpider.startDownload();
-            
+
         } catch (FileNotFoundException e) {
             System.out.println("启动失败，无法找到配置文件");
         } catch (IllegalArgumentException e) {
             System.out.println("启动失败，请检查配置文件是否错误");
+        } catch (InterruptedException e){
+            System.out.println("线程池关闭失败");
         }
     }
 
