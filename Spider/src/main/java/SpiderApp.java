@@ -20,7 +20,7 @@ public class SpiderApp {
 
     public static void start() {
         try {
-            String jsonConfig = IoUtil.read(new FileReader("C:\\Users\\Gloduck\\Desktop\\Spider\\config.json"));
+            String jsonConfig = IoUtil.read(new FileReader("config.json"));
             JSONObject jsonObject = JSONUtil.parseObj(jsonConfig);
             SpiderConfig config = jsonObject.toBean(SpiderConfig.class);
             config.adjustConfig();
