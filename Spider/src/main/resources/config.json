@@ -8,6 +8,9 @@
     "downloadBufferSize": 5242880,
     "baseDownloadPath": ".",
     "proxyHostAndPort": "",
+    "extra":{
+
+    },
     "type":"",
     "targetLists": [
       ""

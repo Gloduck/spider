@@ -3,7 +3,9 @@ package spider.config;
 import lombok.Data;
 import org.jsoup.internal.StringUtil;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Data
 public class SpiderConfig {
@@ -17,6 +19,7 @@ public class SpiderConfig {
     private String baseDownloadPath;
     private String proxyHostAndPort;
     private String type;
+    private Map<String, String> extra;
     private List<String> targetLists;
     public void adjustConfig(){
         int processors = Runtime.getRuntime().availableProcessors();
@@ -44,6 +47,9 @@ public class SpiderConfig {
         }
         if(type == null || targetLists == null || targetLists.size() == 0){
             throw new IllegalArgumentException();
+        }
+        if(extra == null){
+            extra = new HashMap<>();
         }
 
     }
