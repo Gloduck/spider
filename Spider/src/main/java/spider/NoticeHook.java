@@ -3,7 +3,6 @@ package spider;
 import spider.config.SpiderConfig;
 
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.List;
@@ -124,7 +123,7 @@ public interface NoticeHook {
 
         @Override
         public void allTaskDone(SpiderConfig config, Set<String> failedSet, List<String> allTargetUrls) {
-            System.out.printf("所有的任务已经完成，目标链接数为：%d，失败数为：%d\n失败的任务如下：\n");
+            System.out.printf("所有的任务已经完成，目标链接数为：%d，失败数为：%d\n失败的任务如下：\n",allTargetUrls.size(), failedSet.size());
             for (String s : failedSet) {
                 System.out.println(s);
             }
@@ -148,7 +147,7 @@ public interface NoticeHook {
 
         @Override
         public void parseListFailed(SpiderConfig config, String currentList, Exception e) {
-            System.out.printf("解析列表：%s失败\n", currentList);
+            System.out.printf("解析列表：%s失败，错误信息为：\n%s\n", currentList,e.getLocalizedMessage());
         }
 
 
@@ -184,6 +183,7 @@ public interface NoticeHook {
                 long contentLengthLong = urlConnection.getContentLengthLong();
                 size = String.format("%dMB", (contentLengthLong / (1024 * 1024)));
             } catch (IOException e) {
+
             }
             System.out.printf("线程：%s开始下载，文件名为：%s，目标路径为：%s，文件大小为：%s\n", name, info.getFileName(), info.getTargetPath(), size);
         }
@@ -196,7 +196,7 @@ public interface NoticeHook {
 
         @Override
         public void downloadFailed(SpiderConfig config, Set<String> failedSet, AbstractSpider.DownloadInfo info, Exception e) {
-            System.out.printf("下载：%s失败\n", info.getLink());
+            System.out.printf("下载：%s失败，错误信息为：\n%s\n", info.getLink(),e.getLocalizedMessage());
         }
 
         @Override

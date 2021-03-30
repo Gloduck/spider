@@ -17,7 +17,6 @@ import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.regex.Matcher;
 
 /**
  * @author Gloduck

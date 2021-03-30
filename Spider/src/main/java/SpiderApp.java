@@ -1,4 +1,3 @@
-
 import cn.hutool.core.io.IoUtil;
 
 import cn.hutool.json.JSONObject;
@@ -8,6 +7,7 @@ import spider.AbstractSpider;
 import spider.NoticeHook;
 import spider.config.SpiderConfig;
 import spider.impl.PornHubSpider;
+import spider.utils.GlobalUtils;
 
 import java.io.*;
 
@@ -23,7 +23,11 @@ public class SpiderApp {
 
     public static void start() {
         try {
-            String jsonConfig = IoUtil.read(new FileReader("config.json"));
+            File configFile = GlobalUtils.getFileInJarPath("config.json");
+            if(configFile == null){
+                throw new FileNotFoundException();
+            }
+            String jsonConfig = IoUtil.read(new FileReader(configFile));
             JSONObject jsonObject = JSONUtil.parseObj(jsonConfig);
             SpiderConfig config = jsonObject.toBean(SpiderConfig.class);
             config.adjustConfig();
